@@ -25,6 +25,7 @@ func SetupRouter() {
 	http.HandleFunc("/api/films", handlers.GetFilms)        // список всех фильмов
 	http.HandleFunc("/admin", handlers.AdminPage)
 	http.HandleFunc("/add", handlers.AddPage)
-	http.HandleFunc("/api/add", handlers.AddProject) // добавить фильм
-	http.HandleFunc("/api/releases", handlers.GetRelease)
+	http.HandleFunc("/api/add", handlers.AddProject)      // добавить фильм
+	http.HandleFunc("/api/releases", handlers.GetRelease) // api конкретного фильма
+	// /watch/:id/:seria
 }
