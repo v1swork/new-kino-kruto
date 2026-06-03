@@ -45,7 +45,7 @@ func GetRelease(w http.ResponseWriter, r *http.Request) {
         LEFT JOIN Logos l on l.id=fl.logoId
         LEFT JOIN Seasons s on r.seasonId=s.id
         LEFT JOIN Materials m on m.id=r.materialId
-        WHERE r.id = $1 AND r.number_seria=$2 AND s.numberSeason=$3;
+        WHERE r.filmId = $1 AND r.number_seria=$2 AND s.numberSeason=$3;
     `, id, seria, season)
 
 	var f models.Release
