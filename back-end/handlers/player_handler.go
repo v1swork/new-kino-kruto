@@ -11,6 +11,7 @@ import (
 func GetRelease(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")
 	numStr := r.URL.Query().Get("seria")
+	seasonStr := r.URL.Query().Get("season")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		http.Error(w, "invalid id", 400)
@@ -19,6 +20,11 @@ func GetRelease(w http.ResponseWriter, r *http.Request) {
 	seria, err := strconv.Atoi(numStr)
 	if err != nil {
 		http.Error(w, "invalid seria", 400)
+		return
+	}
+	season, err := strconv.Atoi(seasonStr)
+	if err != nil {
+		http.Error(w, "invalid season", 400)
 		return
 	}
 	row := db.DB.QueryRow(`
@@ -39,15 +45,15 @@ func GetRelease(w http.ResponseWriter, r *http.Request) {
         LEFT JOIN Logos l on l.id=fl.logoId
         LEFT JOIN Seasons s on r.seasonId=s.id
         LEFT JOIN Materials m on m.id=r.materialId
-        WHERE r.id = $1 AND r.number_seria=$2
-    `, id, seria)
+        WHERE r.id = $1 AND r.number_seria=$2 AND s.numberSeason=$3;
+    `, id, seria, season)
 
 	var f models.Release
 	var l models.Logo
 
 	err = row.Scan(
 		&f.Id,
-		&f.FilmdId,
+		&f.FilmId,
 		&f.NumSeria,
 		&f.Title,
 		&f.NumberSeason,
