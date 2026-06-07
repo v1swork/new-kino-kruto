@@ -17,15 +17,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 func SetupRouter() {
-	fs := http.FileServer(http.Dir("../front-end"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	uploads := http.FileServer(http.Dir("/uploads"))
+	http.Handle("/uploads/", http.StripPrefix("/uploads/", uploads))
+
 	http.HandleFunc("/", handlers.MainPage)
 	http.HandleFunc("/watch/film/", handlers.WatchFilmPage) // страница плеера
 	http.HandleFunc("/cinema", handlers.CinemaPage)         // кинотеатр
-	http.HandleFunc("/api/films", handlers.GetFilms)        // список всех фильмов
+	// список всех фильмов
 	http.HandleFunc("/admin", handlers.AdminPage)
 	http.HandleFunc("/add", handlers.AddPage)
+
 	http.HandleFunc("/api/add", handlers.AddProject)      // добавить фильм
 	http.HandleFunc("/api/releases", handlers.GetRelease) // api конкретного фильма
+	http.HandleFunc("/api/upload", handlers.UploadFile)
+	http.HandleFunc("/api/films", handlers.GetFilms)
 	// /watch/:id/:seria
 }
