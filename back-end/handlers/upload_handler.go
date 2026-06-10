@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func UploadFile(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +34,7 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 	uploadDir := fmt.Sprintf("/uploads/%s", fileType)
 	os.MkdirAll(uploadDir, os.ModePerm)
 
-	filename := filepath.Base(handler.Filename)
+	filename := fmt.Sprintf("%d_%s", time.Now().UnixNano(), filepath.Base(handler.Filename))
 	filename = strings.ReplaceAll(filename, " ", "_")
 
 	savePath := filepath.Join(uploadDir, filename)
